@@ -20,7 +20,7 @@ def set_speed(motor_ID, value):
 	else:
 		rospy.logerror('set_speed(%d, %f) -> invalid motor_ID=%d', motor_ID, value, motor_ID)
 		return
-	
+
 	motor.setSpeed(speed)
 
 	if value > 0:
@@ -51,17 +51,17 @@ def on_cmd_str(msg):
 	rospy.loginfo(rospy.get_caller_id() + ' cmd_str=%s', msg.data)
 
 	if msg.data.lower() == "left":
-		set_speed(motor_left_ID,  -1.0)
-		set_speed(motor_right_ID,  1.0) 
+		set_speed(motor_left_ID,  1.0)
+		set_speed(motor_right_ID, -1.0)
 	elif msg.data.lower() == "right":
-		set_speed(motor_left_ID,   1.0)
-		set_speed(motor_right_ID, -1.0) 
-	elif msg.data.lower() == "forward":
-		set_speed(motor_left_ID,   1.0)
-		set_speed(motor_right_ID,  1.0)
-	elif msg.data.lower() == "backward":
 		set_speed(motor_left_ID,  -1.0)
-		set_speed(motor_right_ID, -1.0)  
+		set_speed(motor_right_ID,  1.0)
+	elif msg.data.lower() == "forward":
+		set_speed(motor_left_ID,   -1.0)
+		set_speed(motor_right_ID,  -1.0)
+	elif msg.data.lower() == "backward":
+		set_speed(motor_left_ID,  1.0)
+		set_speed(motor_right_ID, 1.0)
 	elif msg.data.lower() == "stop":
 		all_stop()
 	else:
@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
 	# setup ros node
 	rospy.init_node('jetbot_motors')
-	
+
 	rospy.Subscriber('~cmd_dir', String, on_cmd_dir)
 	rospy.Subscriber('~cmd_raw', String, on_cmd_raw)
 	rospy.Subscriber('~cmd_str', String, on_cmd_str)
@@ -95,4 +95,3 @@ if __name__ == '__main__':
 
 	# stop motors before exiting
 	all_stop()
-
