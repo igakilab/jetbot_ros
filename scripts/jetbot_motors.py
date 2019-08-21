@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import rospy
 import time
+from getch import getch
 
 from Adafruit_MotorHAT import Adafruit_MotorHAT
 from std_msgs.msg import String
@@ -67,6 +68,25 @@ class SimpleJetbot:
         else:
             rospy.logerror(rospy.get_caller_id() + ' invalid cmd_str=%s', msg.data)
 
+    def spin(self):
+        while not rospy.is_shutdown():
+            key = ord(getch())
+            message = ""
+            if key in {83,115}: #S or s
+                message = "FORWARD"
+                self.set_speed(self.motor_left_ID,   -1.0)
+                self.set_speed(self.motor_right_ID,  -1.0)
+            elif key in {81,113}: #Q or q
+                message = "STOP"
+                self.all_stop()
+            elif key == 3: #Ctr+C
+                raise KeyboardInterrupt
+            else:
+                pass
+            if message:
+                message = message + " is pressed"
+                print(message)
+
 # initialization
 if __name__ == '__main__':
 
@@ -78,7 +98,11 @@ if __name__ == '__main__':
     jetbot.all_stop()
 
     # start running
-    rospy.spin()
-
-    # stop motors before exiting
-    jetbot.all_stop()
+    #rospy.spin()
+    try:
+        jetbot.spin()
+    except rospy.ROSInterruptException:
+        # stop motors before exiting
+        jetbot.all_stop()
+    except KeyboardInterrupt:
+        jetbot.all_stop()
