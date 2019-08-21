@@ -90,10 +90,7 @@ catkin_make
 ```
 sudo sh -c 'echo "source ~/workspace/catkin_ws/devel/setup.bash" >> ~/.bashrc'
 ```
-
-```
 > Note:  out of personal preference, my catkin_ws is created as a subdirectory under ~/workspace
-
 - Close and open a new terminal window.
 - Verify that your catkin_ws is visible to ROS:
 ```bash
@@ -131,13 +128,13 @@ cd ~/catkin_ws
 catkin_make
 ```
 
-- http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29
+- 参考：http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29
 ```
-source ~/workspace/catkin_ws/devel/setup.bash
 roscd beginner_tutorials
 mkdir scripts
 cd scripts
 ```
+- 本来なら ``source ~/workspace/catkin_ws/devel/setup.bash`` が必要だが，セットアップ時に.bashrcに追加しているので，ターミナルを開き直すだけでOK.
 
 - Download https://raw.github.com/ros/ros_tutorials/kinetic-devel/rospy_tutorials/001_talker_listener/talker.py into ~/workspace/catkin_ws/src/beginner_tutorials/scripts
 - Download https://raw.github.com/ros/ros_tutorials/kinetic-devel/rospy_tutorials/001_talker_listener/listener.py into ~/workspace/catkin_ws/src/beginner_tutorials/scripts
@@ -147,6 +144,7 @@ chmod +x talker.py
 chmod +x listener.py
 ```
 - Build executables by 'catkin_make'.
+  - pythonの場合は最初に一度実行してたらもしかしたら不要？
 ```
 $ cd ~/workspace/catkin_ws
 $ catkin_make
